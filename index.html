@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retirement Calculator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0}
+.hero{background:#0a0a0a;color:#f0ede6;padding:2rem 2rem 1.75rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border:1px solid rgba(200,168,75,0.2);border-radius:50%}
+.hero-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#c8a84b;font-weight:500;margin-bottom:0.5rem}
+.hero-title{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1.1;margin-bottom:0.4rem}
+.hero-title em{font-style:italic;color:#c8a84b}
+.hero-sub{font-size:13px;color:rgba(240,237,230,0.5);font-weight:300;line-height:1.5}
+.body{padding:1.5rem 2rem;max-width:600px;margin:0 auto}
+.fields{display:grid;gap:0.9rem;margin-bottom:1.5rem}
+.field-label{font-size:11px;font-weight:500;color:#666;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px}
+.input-wrap{display:flex;align-items:center;background:#fff;border:1px solid #e0ddd6;border-radius:8px;overflow:hidden;transition:border-color .15s}
+.input-wrap:focus-within{border-color:#c8a84b}
+.input-prefix,.input-suffix{padding:0 10px;font-size:13px;color:#999;line-height:42px;user-select:none;white-space:nowrap}
+.input-wrap input{border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#0a0a0a;padding:0 10px;height:42px;width:100%;min-width:0}
+.divider{height:1px;background:#e8e4dc;margin:0 0 1.5rem}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.rc{background:#fff;border:1px solid #e0ddd6;border-radius:12px;padding:1rem 1.2rem}
+.rc.dark{background:#0a0a0a;border-color:transparent}
+.rc-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;margin-bottom:4px}
+.rc.dark .rc-label{color:rgba(240,237,230,0.45)}
+.rc-value{font-family:'DM Serif Display',serif;font-size:1.55rem;color:#0a0a0a;line-height:1}
+.rc.dark .rc-value{color:#f0ede6}
+.rc-sub{font-size:11px;color:#999;margin-top:3px}
+.rc.dark .rc-sub{color:#c8a84b}
+.chart-wrap{background:#fff;border:1px solid #e0ddd6;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.chart-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#999}
+.resim{font-size:12px;color:#999;background:#f7f5f0;border:1px solid #e0ddd6;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;display:none}
+.resim:hover{color:#0a0a0a;border-color:#c8a84b}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:#f7f5f0;border-radius:8px;padding:10px 14px;margin-bottom:12px}
+.tl{font-size:13px;color:#444}
+.tl small{font-size:11px;color:#999;display:block;margin-top:1px}
+.sw{position:relative;width:38px;height:21px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.sw-track{position:absolute;inset:0;background:#d0cdc6;border-radius:11px;cursor:pointer;transition:.2s}
+.sw-track:before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.sw input:checked ~ .sw-track{background:#c8a84b}
+.sw input:checked ~ .sw-track:before{transform:translateX(17px)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.li{display:flex;align-items:center;gap:6px;font-size:12px;color:#666}
+.ld{width:16px;height:2px;border-radius:1px;flex-shrink:0}
+.ld.dashed{background:transparent;border-top:2px dashed #bbb}
+.chart-area{position:relative;height:210px}
+.cta{background:#c8a84b;border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.cta:hover{background:#b8983b}
+.cta-text{font-size:14px;font-weight:500;color:#0a0a0a}
+.cta-sub{font-size:11px;color:rgba(10,10,10,0.55);margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Retirement Planner</div>
+  <div class="hero-title">Your future,<br><em>calculated.</em></div>
+  <div class="hero-sub">See exactly how much you'll have when it matters most.</div>
+</div>
+
+<div class="body">
+  <div class="fields">
+    <div>
+      <div class="field-label">Current Age</div>
+      <div class="input-wrap"><input type="text" id="i-age" value="35"><span class="input-suffix">yrs</span></div>
+    </div>
+    <div>
+      <div class="field-label">Retirement Age</div>
+      <div class="input-wrap"><input type="text" id="i-ret" value="65"><span class="input-suffix">yrs</span></div>
+    </div>
+    <div>
+      <div class="field-label">Expected End of Life</div>
+      <div class="input-wrap"><input type="text" id="i-eol" value="90"><span class="input-suffix">yrs</span></div>
+    </div>
+    <div>
+      <div class="field-label">Current Savings</div>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-save" value="50000"></div>
+    </div>
+    <div>
+      <div class="field-label">Monthly Contribution</div>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-contrib" value="500"></div>
+    </div>
+    <div>
+      <div class="field-label">Fixed Annual Return</div>
+      <div class="input-wrap"><input type="text" id="i-rate" value="7"><span class="input-suffix">%</span></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="results">
+    <div class="rc dark">
+      <div class="rc-label">Total at Retirement</div>
+      <div class="rc-value" id="r-total">—</div>
+      <div class="rc-sub" id="r-years">—</div>
+    </div>
+    <div class="rc">
+      <div class="rc-label">Monthly Income</div>
+      <div class="rc-value" id="r-income">—</div>
+      <div class="rc-sub" id="r-income-sub">—</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-header">
+      <div class="chart-title">Lifetime projection</div>
+      <button class="resim" id="resim" onclick="runSims()">&#8635; New draws</button>
+    </div>
+    <div class="toggle-row">
+      <div class="tl">Show S&amp;P 500 scenario draws<small>20 random paths from historical annual returns</small></div>
+      <label class="sw"><input type="checkbox" id="sim-toggle"><span class="sw-track"></span></label>
+    </div>
+    <div class="legend">
+      <div class="li"><div class="ld dashed"></div>Contributions <b id="bk-contrib" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
+      <div class="li"><div class="ld" style="background:#c8a84b;height:2.5px"></div>Fixed balance <b id="bk-total" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
+      <div class="li"><div class="ld" style="background:#e05a5a;height:2.5px"></div>Fixed drawdown <b id="bk-eol" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
+      <div class="li" id="leg-sim" style="display:none"><div class="ld" style="background:rgba(80,140,220,0.5);height:1px"></div>S&amp;P scenarios</div>
+    </div>
+    <div class="chart-area"><canvas id="chart"></canvas></div>
+  </div>
+
+  <div class="cta" onclick="alert('Connect this to Claude API for personalized advice!')">
+    <div>
+      <div class="cta-text">Get personalized advice</div>
+      <div class="cta-sub">Analyze your retirement plan</div>
+    </div>
+    <div style="font-size:18px">&#8594;</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+var SP500 = [0.378,0.439,-0.083,-0.255,-0.439,-0.084,0.497,0.466,-0.353,-0.011,0.467,0.319,0.134,-0.108,0.253,0.191,0.312,-0.352,0.243,0.138,0.196,0.256,0.116,-0.098,0.237,0.118,-0.100,0.240,0.111,0.239,0.188,0.314,-0.032,0.307,0.074,0.181,0.290,-0.084,-0.100,-0.119,0.239,0.111,0.240,0.118,0.212,0.114,0.264,0.145,-0.071,0.023,0.159,0.325,0.054,0.168,-0.152,0.326,0.234,0.149,-0.031,0.304,0.076,0.100,0.013,0.372,0.229,0.333,0.283,0.209,-0.090,-0.119,-0.220,0.287,0.109,0.049,0.158,0.055,-0.370,0.265,0.151,0.021,0.160,0.324,0.137,0.014,0.120,0.216,-0.001,0.119,0.218,0.285,-0.044,0.317,0.134];
+
+var myChart = null;
+var simPaths = [];
+
+function parse(id){ return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0; }
+function fmtK(v){
+  var a=Math.abs(v), s=v<0?'-':'';
+  if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M';
+  if(a>=1000) return s+'$'+Math.round(a/1000)+'K';
+  return s+'$'+Math.round(a);
+}
+function fmt(v){ return '$'+Math.round(v).toLocaleString(); }
+function pick(){ return SP500[Math.floor(Math.random()*SP500.length)]; }
+
+function runSims(){
+  var age=parse('i-age'), ret=parse('i-ret'), eol=parse('i-eol');
+  var save=parse('i-save'), contrib=parse('i-contrib'), rate=parse('i-rate')/100;
+  if(!age||!ret||!eol||ret<=age||eol<=ret||rate<=0) return;
+  var ay=ret-age, dy=eol-ret;
+  var b=save, mr=rate/12;
+  for(var y=0;y<ay;y++) for(var m=0;m<12;m++) b=b*(1+mr)+contrib;
+  var wdl=b*0.04/12;
+  simPaths=[];
+  for(var i=0;i<20;i++){
+    var bal=save, pts=[Math.round(bal)];
+    for(var y=0;y<ay;y++){
+      var yr=pick()/12;
+      for(var m=0;m<12;m++) bal=bal*(1+yr)+contrib;
+      pts.push(Math.round(Math.max(bal,0)));
+    }
+    for(var y=0;y<dy;y++){
+      var yr=pick()/12;
+      for(var m=0;m<12;m++){ bal=bal*(1+yr)-wdl; if(bal<0)bal=0; }
+      pts.push(Math.round(bal));
+    }
+    simPaths.push(pts);
+  }
+  render();
+}
+
+function render(){
+  var age=parse('i-age'), ret=parse('i-ret'), eol=parse('i-eol');
+  var save=parse('i-save'), contrib=parse('i-contrib'), annRate=parse('i-rate');
+  var showSim=document.getElementById('sim-toggle').checked;
+  if(!age||!ret||!eol||ret<=age||eol<=ret||annRate<=0) return;
+
+  var rate=annRate/100/12, ay=ret-age, dy=eol-ret;
+  var bal=save, tc=save;
+  var labels=[], totals=[], cline=[], dline=[];
+
+  for(var y=0;y<=ay;y++){
+    labels.push(Math.round(age+y));
+    totals.push(Math.round(bal));
+    cline.push(Math.round(tc));
+    dline.push(null);
+    if(y<ay) for(var m=0;m<12;m++){ bal=bal*(1+rate)+contrib; tc+=contrib; }
+  }
+  var retBal=totals[totals.length-1];
+  var wdl=retBal*0.04/12;
+  var db=retBal;
+  for(var y=1;y<=dy;y++){
+    for(var m=0;m<12;m++) db=db*(1+rate)-wdl;
+    labels.push(Math.round(ret+y));
+    totals.push(null);
+    cline.push(null);
+    dline.push(Math.round(Math.max(db,0)));
+  }
+
+  var finalBal=dline[dline.length-1];
+  document.getElementById('r-total').textContent=fmtK(retBal);
+  document.getElementById('r-years').textContent='in '+ay+' years';
+  document.getElementById('r-income').textContent=fmt(wdl)+'/mo';
+  document.getElementById('r-income-sub').textContent='4% rule · '+dy+' yr drawdown';
+  document.getElementById('bk-contrib').textContent=fmtK(tc);
+  document.getElementById('bk-total').textContent=fmtK(retBal);
+  document.getElementById('bk-eol').textContent=fmtK(Math.max(finalBal,0));
+  document.getElementById('resim').style.display=showSim?'inline-block':'none';
+  document.getElementById('leg-sim').style.display=showSim?'flex':'none';
+
+  var datasets=[];
+  if(showSim && simPaths.length>0){
+    simPaths.forEach(function(p){
+      datasets.push({data:p,borderColor:'rgba(80,140,220,0.18)',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:0,borderWidth:1,order:5});
+    });
+  }
+  datasets.push({label:'Contributions',data:cline,borderColor:'#bbb',backgroundColor:'transparent',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[5,3],spanGaps:false,order:3});
+  datasets.push({label:'Fixed Balance',data:totals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.07)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
+  datasets.push({label:'Drawdown',data:dline,borderColor:'#e05a5a',backgroundColor:'rgba(224,90,90,0.06)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
+
+  if(myChart) myChart.destroy();
+  myChart=new Chart(document.getElementById('chart'),{
+    type:'line',
+    data:{labels:labels,datasets:datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      animation:{duration:250},
+      plugins:{legend:{display:false},tooltip:{filter:function(i){return !!i.dataset.label;},callbacks:{label:function(i){return i.dataset.label+': '+fmtK(i.raw);}}}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},maxTicksLimit:8}},
+        y:{min:0,grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},callback:function(v){return fmtK(v);}}}
+      }
+    }
+  });
+}
+
+document.getElementById('sim-toggle').addEventListener('change',function(){
+  if(this.checked && simPaths.length===0) runSims();
+  else render();
+});
+
+['i-age','i-ret','i-eol','i-save','i-contrib','i-rate'].forEach(function(id){
+  document.getElementById(id).addEventListener('input',function(){
+    simPaths=[];
+    if(document.getElementById('sim-toggle').checked) runSims();
+    else render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
