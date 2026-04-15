@@ -15,14 +15,18 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 .hero-title em{font-style:italic;color:#c8a84b}
 .hero-sub{font-size:13px;color:rgba(240,237,230,0.5);font-weight:300;line-height:1.5}
 .body{padding:1.5rem 2rem;max-width:600px;margin:0 auto}
-.fields{display:grid;gap:0.9rem;margin-bottom:1.5rem}
+.section-label{font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;margin-top:1.25rem}
+.fields{display:grid;gap:0.9rem;margin-bottom:0.5rem}
 .field-label{font-size:11px;font-weight:500;color:#666;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px}
 .input-wrap{display:flex;align-items:center;background:#fff;border:1px solid #e0ddd6;border-radius:8px;overflow:hidden;transition:border-color .15s}
 .input-wrap:focus-within{border-color:#c8a84b}
 .input-prefix,.input-suffix{padding:0 10px;font-size:13px;color:#999;line-height:42px;user-select:none;white-space:nowrap}
 .input-wrap input{border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#0a0a0a;padding:0 10px;height:42px;width:100%;min-width:0}
-.divider{height:1px;background:#e8e4dc;margin:0 0 1.5rem}
-.results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem}
+.ss-note{font-size:11px;color:#999;margin-top:8px;line-height:1.5}
+.divider{height:1px;background:#e8e4dc;margin:1.25rem 0}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.results-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.5rem}
 .rc{background:#fff;border:1px solid #e0ddd6;border-radius:12px;padding:1rem 1.2rem}
 .rc.dark{background:#0a0a0a;border-color:transparent}
 .rc-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;margin-bottom:4px}
@@ -65,6 +69,8 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 </div>
 
 <div class="body">
+
+  <div class="section-label">Accumulation</div>
   <div class="fields">
     <div>
       <div class="field-label">Current Age</div>
@@ -86,10 +92,31 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
       <div class="field-label">Monthly Contribution</div>
       <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-contrib" value="500"></div>
     </div>
-    <div>
-      <div class="field-label">Fixed Annual Return</div>
-      <div class="input-wrap"><input type="text" id="i-rate" value="7"><span class="input-suffix">%</span></div>
+    <div class="two-col">
+      <div>
+        <div class="field-label">Fixed Annual Return</div>
+        <div class="input-wrap"><input type="text" id="i-rate" value="7"><span class="input-suffix">%</span></div>
+      </div>
+      <div>
+        <div class="field-label">Withdrawal Rate</div>
+        <div class="input-wrap"><input type="text" id="i-wdl" value="4"><span class="input-suffix">%</span></div>
+      </div>
     </div>
+  </div>
+
+  <div class="section-label">Social Security</div>
+  <div class="fields">
+    <div class="two-col">
+      <div>
+        <div class="field-label">Monthly Benefit</div>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-ss" value="0"></div>
+      </div>
+      <div>
+        <div class="field-label">Start Age</div>
+        <div class="input-wrap"><input type="text" id="i-ss-age" value="67"><span class="input-suffix">yrs</span></div>
+      </div>
+    </div>
+    <div class="ss-note">SS benefit offsets monthly withdrawals from savings. Set to $0 to exclude. Any SS benefit exceeding the withdrawal need is not reinvested.</div>
   </div>
 
   <div class="divider"></div>
@@ -97,13 +124,30 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
   <div class="results">
     <div class="rc dark">
       <div class="rc-label">Total at Retirement</div>
-      <div class="rc-value" id="r-total">—</div>
-      <div class="rc-sub" id="r-years">—</div>
+      <div class="rc-value" id="r-total">--</div>
+      <div class="rc-sub" id="r-years">--</div>
     </div>
     <div class="rc">
-      <div class="rc-label">Monthly Income</div>
-      <div class="rc-value" id="r-income">—</div>
-      <div class="rc-sub" id="r-income-sub">—</div>
+      <div class="rc-label">Total Monthly Income</div>
+      <div class="rc-value" id="r-income">--</div>
+      <div class="rc-sub" id="r-income-sub">--</div>
+    </div>
+  </div>
+  <div class="results-3">
+    <div class="rc">
+      <div class="rc-label">From Savings</div>
+      <div class="rc-value" id="r-from-savings" style="font-size:1.2rem">--</div>
+      <div class="rc-sub" id="r-savings-sub">--</div>
+    </div>
+    <div class="rc">
+      <div class="rc-label">From SS</div>
+      <div class="rc-value" id="r-from-ss" style="font-size:1.2rem">--</div>
+      <div class="rc-sub" id="r-ss-sub">--</div>
+    </div>
+    <div class="rc">
+      <div class="rc-label">Balance at EOL</div>
+      <div class="rc-value" id="r-eol" style="font-size:1.2rem">--</div>
+      <div class="rc-sub" id="r-eol-sub">--</div>
     </div>
   </div>
 
@@ -117,9 +161,9 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
       <label class="sw"><input type="checkbox" id="sim-toggle"><span class="sw-track"></span></label>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld dashed"></div>Contributions <b id="bk-contrib" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
-      <div class="li"><div class="ld" style="background:#c8a84b;height:2.5px"></div>Fixed balance <b id="bk-total" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
-      <div class="li"><div class="ld" style="background:#e05a5a;height:2.5px"></div>Fixed drawdown <b id="bk-eol" style="margin-left:4px;color:#0a0a0a;font-weight:500">—</b></div>
+      <div class="li"><div class="ld dashed"></div>Contributions <b id="bk-contrib" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
+      <div class="li"><div class="ld" style="background:#c8a84b;height:2.5px"></div>Fixed balance <b id="bk-total" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
+      <div class="li"><div class="ld" style="background:#e05a5a;height:2.5px"></div>Fixed drawdown <b id="bk-eol" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
       <div class="li" id="leg-sim" style="display:none"><div class="ld" style="background:rgba(80,140,220,0.5);height:1px"></div>S&amp;P scenarios</div>
     </div>
     <div class="chart-area"><canvas id="chart"></canvas></div>
@@ -136,125 +180,63 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-var SP500 = [0.378,0.439,-0.083,-0.255,-0.439,-0.084,0.497,0.466,-0.353,-0.011,0.467,0.319,0.134,-0.108,0.253,0.191,0.312,-0.352,0.243,0.138,0.196,0.256,0.116,-0.098,0.237,0.118,-0.100,0.240,0.111,0.239,0.188,0.314,-0.032,0.307,0.074,0.181,0.290,-0.084,-0.100,-0.119,0.239,0.111,0.240,0.118,0.212,0.114,0.264,0.145,-0.071,0.023,0.159,0.325,0.054,0.168,-0.152,0.326,0.234,0.149,-0.031,0.304,0.076,0.100,0.013,0.372,0.229,0.333,0.283,0.209,-0.090,-0.119,-0.220,0.287,0.109,0.049,0.158,0.055,-0.370,0.265,0.151,0.021,0.160,0.324,0.137,0.014,0.120,0.216,-0.001,0.119,0.218,0.285,-0.044,0.317,0.134];
-
-var myChart = null;
-var simPaths = [];
-
-function parse(id){ return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0; }
-function fmtK(v){
-  var a=Math.abs(v), s=v<0?'-':'';
-  if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M';
-  if(a>=1000) return s+'$'+Math.round(a/1000)+'K';
-  return s+'$'+Math.round(a);
-}
-function fmt(v){ return '$'+Math.round(v).toLocaleString(); }
-function pick(){ return SP500[Math.floor(Math.random()*SP500.length)]; }
+var SP500=[0.378,0.439,-0.083,-0.255,-0.439,-0.084,0.497,0.466,-0.353,-0.011,0.467,0.319,0.134,-0.108,0.253,0.191,0.312,-0.352,0.243,0.138,0.196,0.256,0.116,-0.098,0.237,0.118,-0.100,0.240,0.111,0.239,0.188,0.314,-0.032,0.307,0.074,0.181,0.290,-0.084,-0.100,-0.119,0.239,0.111,0.240,0.118,0.212,0.114,0.264,0.145,-0.071,0.023,0.159,0.325,0.054,0.168,-0.152,0.326,0.234,0.149,-0.031,0.304,0.076,0.100,0.013,0.372,0.229,0.333,0.283,0.209,-0.090,-0.119,-0.220,0.287,0.109,0.049,0.158,0.055,-0.370,0.265,0.151,0.021,0.160,0.324,0.137,0.014,0.120,0.216,-0.001,0.119,0.218,0.285,-0.044,0.317,0.134];
+var myChart=null,simPaths=[];
+function parse(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0;}
+function fmtK(v){var a=Math.abs(v),s=v<0?'-':'';if(a>=1e6)return s+'$'+(a/1e6).toFixed(1)+'M';if(a>=1000)return s+'$'+Math.round(a/1000)+'K';return s+'$'+Math.round(a);}
+function fmt(v){return '$'+Math.round(v).toLocaleString();}
+function pick(){return SP500[Math.floor(Math.random()*SP500.length)];}
+function getInputs(){return{age:parse('i-age'),ret:parse('i-ret'),eol:parse('i-eol'),save:parse('i-save'),contrib:parse('i-contrib'),rate:parse('i-rate'),wdl:parse('i-wdl'),ss:parse('i-ss'),ssAge:parse('i-ss-age')};}
+function valid(p){return p.age&&p.ret&&p.eol&&p.ret>p.age&&p.eol>p.ret&&p.rate>0&&p.wdl>0;}
 
 function runSims(){
-  var age=parse('i-age'), ret=parse('i-ret'), eol=parse('i-eol');
-  var save=parse('i-save'), contrib=parse('i-contrib'), rate=parse('i-rate')/100;
-  if(!age||!ret||!eol||ret<=age||eol<=ret||rate<=0) return;
-  var ay=ret-age, dy=eol-ret;
-  var b=save, mr=rate/12;
-  for(var y=0;y<ay;y++) for(var m=0;m<12;m++) b=b*(1+mr)+contrib;
-  var wdl=b*0.04/12;
-  simPaths=[];
+  var p=getInputs();if(!valid(p))return;
+  var ay=p.ret-p.age,dy=p.eol-p.ret,mr=p.rate/100/12,b=p.save;
+  for(var y=0;y<ay;y++)for(var m=0;m<12;m++)b=b*(1+mr)+p.contrib;
+  var grossWdl=b*(p.wdl/100)/12;simPaths=[];
   for(var i=0;i<20;i++){
-    var bal=save, pts=[Math.round(bal)];
-    for(var y=0;y<ay;y++){
-      var yr=pick()/12;
-      for(var m=0;m<12;m++) bal=bal*(1+yr)+contrib;
-      pts.push(Math.round(Math.max(bal,0)));
-    }
-    for(var y=0;y<dy;y++){
-      var yr=pick()/12;
-      for(var m=0;m<12;m++){ bal=bal*(1+yr)-wdl; if(bal<0)bal=0; }
-      pts.push(Math.round(bal));
-    }
+    var bal=p.save,pts=[Math.round(bal)];
+    for(var y=0;y<ay;y++){var yr=pick()/12;for(var m=0;m<12;m++)bal=bal*(1+yr)+p.contrib;pts.push(Math.round(Math.max(bal,0)));}
+    for(var y=0;y<dy;y++){var curAge=p.ret+y,ssNow=(p.ss>0&&curAge>=p.ssAge)?p.ss:0,netWdl=Math.max(grossWdl-ssNow,0),yr=pick()/12;for(var m=0;m<12;m++){bal=bal*(1+yr)-netWdl;if(bal<0)bal=0;}pts.push(Math.round(bal));}
     simPaths.push(pts);
-  }
-  render();
+  }render();
 }
 
 function render(){
-  var age=parse('i-age'), ret=parse('i-ret'), eol=parse('i-eol');
-  var save=parse('i-save'), contrib=parse('i-contrib'), annRate=parse('i-rate');
-  var showSim=document.getElementById('sim-toggle').checked;
-  if(!age||!ret||!eol||ret<=age||eol<=ret||annRate<=0) return;
-
-  var rate=annRate/100/12, ay=ret-age, dy=eol-ret;
-  var bal=save, tc=save;
-  var labels=[], totals=[], cline=[], dline=[];
-
-  for(var y=0;y<=ay;y++){
-    labels.push(Math.round(age+y));
-    totals.push(Math.round(bal));
-    cline.push(Math.round(tc));
-    dline.push(null);
-    if(y<ay) for(var m=0;m<12;m++){ bal=bal*(1+rate)+contrib; tc+=contrib; }
-  }
-  var retBal=totals[totals.length-1];
-  var wdl=retBal*0.04/12;
-  var db=retBal;
-  for(var y=1;y<=dy;y++){
-    for(var m=0;m<12;m++) db=db*(1+rate)-wdl;
-    labels.push(Math.round(ret+y));
-    totals.push(null);
-    cline.push(null);
-    dline.push(Math.round(Math.max(db,0)));
-  }
-
-  var finalBal=dline[dline.length-1];
+  var p=getInputs(),showSim=document.getElementById('sim-toggle').checked;
+  if(!valid(p))return;
+  var rate=p.rate/100/12,ay=p.ret-p.age,dy=p.eol-p.ret,bal=p.save,tc=p.save;
+  var labels=[],totals=[],cline=[],dline=[];
+  for(var y=0;y<=ay;y++){labels.push(Math.round(p.age+y));totals.push(Math.round(bal));cline.push(Math.round(tc));dline.push(null);if(y<ay)for(var m=0;m<12;m++){bal=bal*(1+rate)+p.contrib;tc+=p.contrib;}}
+  var retBal=totals[totals.length-1],grossWdl=retBal*(p.wdl/100)/12,db=retBal;
+  for(var y=1;y<=dy;y++){var curAge=p.ret+y,ssNow=(p.ss>0&&curAge>=p.ssAge)?p.ss:0,netWdl=Math.max(grossWdl-ssNow,0);for(var m=0;m<12;m++)db=db*(1+rate)-netWdl;labels.push(Math.round(p.ret+y));totals.push(null);cline.push(null);dline.push(Math.round(Math.max(db,0)));}
+  var finalBal=dline[dline.length-1],ssActive=p.ss>0&&p.ssAge<=p.eol,ssAtRet=ssActive&&p.ssAge<=p.ret?p.ss:0;
   document.getElementById('r-total').textContent=fmtK(retBal);
   document.getElementById('r-years').textContent='in '+ay+' years';
-  document.getElementById('r-income').textContent=fmt(wdl)+'/mo';
-  document.getElementById('r-income-sub').textContent='4% rule · '+dy+' yr drawdown';
+  document.getElementById('r-income').textContent=fmt(grossWdl+ssAtRet)+'/mo';
+  document.getElementById('r-income-sub').textContent=ssAtRet>0?'savings + SS at retirement':'from savings (SS starts age '+p.ssAge+')';
+  document.getElementById('r-from-savings').textContent=fmt(grossWdl)+'/mo';
+  document.getElementById('r-savings-sub').textContent=p.wdl+'% withdrawal rule';
+  document.getElementById('r-from-ss').textContent=ssActive?fmt(p.ss)+'/mo':'$0/mo';
+  document.getElementById('r-ss-sub').textContent=ssActive?'starting age '+p.ssAge:'not configured';
+  document.getElementById('r-eol').textContent=fmtK(Math.max(finalBal,0));
+  document.getElementById('r-eol-sub').textContent='at age '+p.eol;
   document.getElementById('bk-contrib').textContent=fmtK(tc);
   document.getElementById('bk-total').textContent=fmtK(retBal);
   document.getElementById('bk-eol').textContent=fmtK(Math.max(finalBal,0));
   document.getElementById('resim').style.display=showSim?'inline-block':'none';
   document.getElementById('leg-sim').style.display=showSim?'flex':'none';
-
   var datasets=[];
-  if(showSim && simPaths.length>0){
-    simPaths.forEach(function(p){
-      datasets.push({data:p,borderColor:'rgba(80,140,220,0.18)',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:0,borderWidth:1,order:5});
-    });
-  }
+  if(showSim&&simPaths.length>0)simPaths.forEach(function(pt){datasets.push({data:pt,borderColor:'rgba(80,140,220,0.18)',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:0,borderWidth:1,order:5});});
   datasets.push({label:'Contributions',data:cline,borderColor:'#bbb',backgroundColor:'transparent',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[5,3],spanGaps:false,order:3});
   datasets.push({label:'Fixed Balance',data:totals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.07)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
   datasets.push({label:'Drawdown',data:dline,borderColor:'#e05a5a',backgroundColor:'rgba(224,90,90,0.06)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
-
-  if(myChart) myChart.destroy();
-  myChart=new Chart(document.getElementById('chart'),{
-    type:'line',
-    data:{labels:labels,datasets:datasets},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      animation:{duration:250},
-      plugins:{legend:{display:false},tooltip:{filter:function(i){return !!i.dataset.label;},callbacks:{label:function(i){return i.dataset.label+': '+fmtK(i.raw);}}}},
-      scales:{
-        x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},maxTicksLimit:8}},
-        y:{min:0,grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},callback:function(v){return fmtK(v);}}}
-      }
-    }
-  });
+  if(myChart)myChart.destroy();
+  myChart=new Chart(document.getElementById('chart'),{type:'line',data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{display:false},tooltip:{filter:function(i){return !!i.dataset.label;},callbacks:{label:function(i){return i.dataset.label+': '+fmtK(i.raw);}}}},scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},maxTicksLimit:8}},y:{min:0,grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},callback:function(v){return fmtK(v);}}}}}});
 }
 
-document.getElementById('sim-toggle').addEventListener('change',function(){
-  if(this.checked && simPaths.length===0) runSims();
-  else render();
-});
-
-['i-age','i-ret','i-eol','i-save','i-contrib','i-rate'].forEach(function(id){
-  document.getElementById(id).addEventListener('input',function(){
-    simPaths=[];
-    if(document.getElementById('sim-toggle').checked) runSims();
-    else render();
-  });
-});
-
+document.getElementById('sim-toggle').addEventListener('change',function(){if(this.checked&&simPaths.length===0)runSims();else render();});
+['i-age','i-ret','i-eol','i-save','i-contrib','i-rate','i-wdl','i-ss','i-ss-age'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){simPaths=[];if(document.getElementById('sim-toggle').checked)runSims();else render();});});
 render();
 </script>
 </body>
