@@ -377,9 +377,24 @@ function render() {
   });
 
   var logScale = p.logScale;
-  var yConfig = logScale
-    ? { type: 'logarithmic', min: 1, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} }
-    : { type: 'linear',      min: 0, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} };
+  // Gather all non-zero data values across paths for axis bounds
+  var allVals = [];
+  paths.forEach(function(pts) { pts.forEach(function(v){ if(v>0) allVals.push(v); }); });
+  var yConfig;
+  if (logScale) {
+    var dataMin = Math.min.apply(null, allVals) || 1;
+    var dataMax = Math.max.apply(null, allVals) || 1;
+    var yMin = Math.pow(10, Math.floor(Math.log10(dataMin)));
+    var yMax = Math.pow(10, Math.ceil(Math.log10(dataMax)));
+    yConfig = { type: 'logarithmic', min: yMin, max: yMax, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} };
+  } else {
+    // Use 80th-percentile of per-path max values as the upper limit
+    var pathMaxes = paths.map(function(pts){ return Math.max.apply(null, pts); });
+    pathMaxes.sort(function(a,b){return a-b;});
+    var p80idx = Math.floor(pathMaxes.length * 0.8);
+    var yMax = pathMaxes[Math.min(p80idx, pathMaxes.length-1)];
+    yConfig = { type: 'linear', min: 0, max: yMax, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} };
+  }
 
   if (myChart) myChart.destroy();
   myChart = new Chart(document.getElementById('chart'), {
