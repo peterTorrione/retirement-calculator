@@ -204,6 +204,27 @@ function parse(id) { return parseFloat(document.getElementById(id).value.replace
 function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M'; if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K'; return s+'$'+Math.round(a); }
 function rnd(lo, hi) { return lo + Math.random()*(hi-lo); }
 
+function addCommas(el) {
+  var raw = el.value.replace(/,/g,'');
+  var n = parseFloat(raw);
+  if (!isNaN(n)) {
+    var pos = el.selectionStart - (el.value.length);
+    el.value = Math.round(n).toLocaleString();
+    var newPos = el.value.length + pos;
+    el.setSelectionRange(Math.max(newPos,0), Math.max(newPos,0));
+  }
+}
+
+['i-save','i-contrib','i-ss'].forEach(function(id) {
+  var el = document.getElementById(id);
+  el.addEventListener('blur', function(){ addCommas(this); });
+  el.addEventListener('keydown', function(e){
+    if(e.key==='Enter') addCommas(this);
+  });
+  // Format initial value
+  addCommas(el);
+});
+
 function getParams() {
   return {
     age:    parse('i-age'),
