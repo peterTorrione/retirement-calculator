@@ -14,19 +14,19 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 .hero-title{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1.1;margin-bottom:0.4rem}
 .hero-title em{font-style:italic;color:#c8a84b}
 .hero-sub{font-size:13px;color:rgba(240,237,230,0.5);font-weight:300;line-height:1.5}
-.body{padding:1.5rem 2rem;max-width:600px;margin:0 auto}
+.body{padding:1.5rem 2rem;max-width:660px;margin:0 auto}
 .section-label{font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;margin-top:1.25rem}
 .fields{display:grid;gap:0.9rem;margin-bottom:0.5rem}
 .field-label{font-size:11px;font-weight:500;color:#666;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px}
 .input-wrap{display:flex;align-items:center;background:#fff;border:1px solid #e0ddd6;border-radius:8px;overflow:hidden;transition:border-color .15s}
 .input-wrap:focus-within{border-color:#c8a84b}
 .input-prefix,.input-suffix{padding:0 10px;font-size:13px;color:#999;line-height:42px;user-select:none;white-space:nowrap}
-.input-wrap input{border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#0a0a0a;padding:0 10px;height:42px;width:100%;min-width:0}
+.input-wrap input[type=text]{border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#0a0a0a;padding:0 10px;height:42px;width:100%;min-width:0}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.9rem}
 .ss-note{font-size:11px;color:#999;margin-top:8px;line-height:1.5}
 .divider{height:1px;background:#e8e4dc;margin:1.25rem 0}
-.results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.results-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.5rem}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
 .rc{background:#fff;border:1px solid #e0ddd6;border-radius:12px;padding:1rem 1.2rem}
 .rc.dark{background:#0a0a0a;border-color:transparent}
 .rc-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;margin-bottom:4px}
@@ -38,8 +38,6 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 .chart-wrap{background:#fff;border:1px solid #e0ddd6;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
 .chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .chart-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#999}
-.resim{font-size:12px;color:#999;background:#f7f5f0;border:1px solid #e0ddd6;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;display:none}
-.resim:hover{color:#0a0a0a;border-color:#c8a84b}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;background:#f7f5f0;border-radius:8px;padding:10px 14px;margin-bottom:12px}
 .tl{font-size:13px;color:#444}
 .tl small{font-size:11px;color:#999;display:block;margin-top:1px}
@@ -52,8 +50,17 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
 .li{display:flex;align-items:center;gap:6px;font-size:12px;color:#666}
 .ld{width:16px;height:2px;border-radius:1px;flex-shrink:0}
-.ld.dashed{background:transparent;border-top:2px dashed #bbb}
-.chart-area{position:relative;height:210px}
+.chart-area{position:relative;height:240px}
+/* Sliders */
+.slider-section{margin-top:16px;display:grid;gap:14px}
+.slider-row{display:flex;flex-direction:column;gap:6px}
+.slider-header{display:flex;justify-content:space-between;align-items:baseline}
+.slider-label{font-size:11px;font-weight:500;color:#666;letter-spacing:0.05em;text-transform:uppercase}
+.slider-value{font-size:14px;font-weight:500;color:#0a0a0a;font-family:'DM Serif Display',serif}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:#e0ddd6;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#c8a84b;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#c8a84b;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
 .cta{background:#c8a84b;border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .cta:hover{background:#b8983b}
 .cta-text{font-size:14px;font-weight:500;color:#0a0a0a}
@@ -70,36 +77,48 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 
 <div class="body">
 
-  <div class="section-label">Accumulation</div>
+  <div class="section-label">Portfolio</div>
   <div class="fields">
-    <div>
-      <div class="field-label">Current Age</div>
-      <div class="input-wrap"><input type="text" id="i-age" value="35"><span class="input-suffix">yrs</span></div>
+    <div class="three-col">
+      <div>
+        <div class="field-label">Current Age</div>
+        <div class="input-wrap"><input type="text" id="i-age" value="40"><span class="input-suffix">yrs</span></div>
+      </div>
+      <div>
+        <div class="field-label">Final Age</div>
+        <div class="input-wrap"><input type="text" id="i-eol" value="100"><span class="input-suffix">yrs</span></div>
+      </div>
+      <div>
+        <div class="field-label">Starting Investment</div>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-save" value="100000"></div>
+      </div>
     </div>
     <div>
-      <div class="field-label">Retirement Age</div>
-      <div class="input-wrap"><input type="text" id="i-ret" value="65"><span class="input-suffix">yrs</span></div>
+      <div class="field-label">Yearly Contribution</div>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-contrib" value="10000"></div>
     </div>
-    <div>
-      <div class="field-label">Expected End of Life</div>
-      <div class="input-wrap"><input type="text" id="i-eol" value="90"><span class="input-suffix">yrs</span></div>
-    </div>
-    <div>
-      <div class="field-label">Current Savings</div>
-      <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-save" value="50000"></div>
-    </div>
-    <div>
-      <div class="field-label">Monthly Contribution</div>
-      <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-contrib" value="500"></div>
+  </div>
+
+  <div class="section-label">Returns &amp; Inflation</div>
+  <div class="fields">
+    <div class="two-col">
+      <div>
+        <div class="field-label">Return — Low</div>
+        <div class="input-wrap"><input type="text" id="i-ret-lo" value="4"><span class="input-suffix">%</span></div>
+      </div>
+      <div>
+        <div class="field-label">Return — High</div>
+        <div class="input-wrap"><input type="text" id="i-ret-hi" value="10"><span class="input-suffix">%</span></div>
+      </div>
     </div>
     <div class="two-col">
       <div>
-        <div class="field-label">Fixed Annual Return</div>
-        <div class="input-wrap"><input type="text" id="i-rate" value="7"><span class="input-suffix">%</span></div>
+        <div class="field-label">Inflation — Low</div>
+        <div class="input-wrap"><input type="text" id="i-inf-lo" value="1"><span class="input-suffix">%</span></div>
       </div>
       <div>
-        <div class="field-label">Withdrawal Rate</div>
-        <div class="input-wrap"><input type="text" id="i-wdl" value="4"><span class="input-suffix">%</span></div>
+        <div class="field-label">Inflation — High</div>
+        <div class="input-wrap"><input type="text" id="i-inf-hi" value="4"><span class="input-suffix">%</span></div>
       </div>
     </div>
   </div>
@@ -108,7 +127,7 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
   <div class="fields">
     <div class="two-col">
       <div>
-        <div class="field-label">Monthly Benefit</div>
+        <div class="field-label">Yearly Benefit</div>
         <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-ss" value="0"></div>
       </div>
       <div>
@@ -116,57 +135,55 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
         <div class="input-wrap"><input type="text" id="i-ss-age" value="67"><span class="input-suffix">yrs</span></div>
       </div>
     </div>
-    <div class="ss-note">SS benefit offsets monthly withdrawals from savings. Set to $0 to exclude. Any SS benefit exceeding the withdrawal need is not reinvested.</div>
+    <div class="ss-note">SS benefit (inflation-adjusted) offsets yearly spend. Set to $0 to exclude.</div>
   </div>
 
   <div class="divider"></div>
 
   <div class="results">
     <div class="rc dark">
-      <div class="rc-label">Total at Retirement</div>
-      <div class="rc-value" id="r-total">--</div>
-      <div class="rc-sub" id="r-years">--</div>
+      <div class="rc-label">Median at Retirement</div>
+      <div class="rc-value" id="r-median">--</div>
+      <div class="rc-sub" id="r-median-sub">--</div>
     </div>
     <div class="rc">
-      <div class="rc-label">Total Monthly Income</div>
-      <div class="rc-value" id="r-income">--</div>
-      <div class="rc-sub" id="r-income-sub">--</div>
-    </div>
-  </div>
-  <div class="results-3">
-    <div class="rc">
-      <div class="rc-label">From Savings</div>
-      <div class="rc-value" id="r-from-savings" style="font-size:1.2rem">--</div>
-      <div class="rc-sub" id="r-savings-sub">--</div>
-    </div>
-    <div class="rc">
-      <div class="rc-label">From SS</div>
-      <div class="rc-value" id="r-from-ss" style="font-size:1.2rem">--</div>
-      <div class="rc-sub" id="r-ss-sub">--</div>
-    </div>
-    <div class="rc">
-      <div class="rc-label">Balance at EOL</div>
-      <div class="rc-value" id="r-eol" style="font-size:1.2rem">--</div>
-      <div class="rc-sub" id="r-eol-sub">--</div>
+      <div class="rc-label">Scenarios Surviving</div>
+      <div class="rc-value" id="r-survive">--</div>
+      <div class="rc-sub" id="r-survive-sub">--</div>
     </div>
   </div>
 
   <div class="chart-wrap">
     <div class="chart-header">
-      <div class="chart-title">Lifetime projection</div>
-      <button class="resim" id="resim" onclick="runSims()">&#8635; New draws</button>
-    </div>
-    <div class="toggle-row">
-      <div class="tl">Show S&amp;P 500 scenario draws<small>20 random paths from historical annual returns</small></div>
-      <label class="sw"><input type="checkbox" id="sim-toggle"><span class="sw-track"></span></label>
+      <div class="chart-title">Lifetime projection — 50 scenarios</div>
+      <div class="toggle-row" style="padding:6px 10px;margin-bottom:0;background:transparent;gap:8px">
+        <div class="tl" style="font-size:12px">Log scale</div>
+        <label class="sw"><input type="checkbox" id="log-toggle"><span class="sw-track"></span></label>
+      </div>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld dashed"></div>Contributions <b id="bk-contrib" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
-      <div class="li"><div class="ld" style="background:#c8a84b;height:2.5px"></div>Fixed balance <b id="bk-total" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
-      <div class="li"><div class="ld" style="background:#e05a5a;height:2.5px"></div>Fixed drawdown <b id="bk-eol" style="margin-left:4px;color:#0a0a0a;font-weight:500">--</b></div>
-      <div class="li" id="leg-sim" style="display:none"><div class="ld" style="background:rgba(80,140,220,0.5);height:1px"></div>S&amp;P scenarios</div>
+      <div class="li"><div class="ld" style="background:rgba(80,180,100,0.5);height:1.5px"></div>Surviving</div>
+      <div class="li"><div class="ld" style="background:rgba(220,80,80,0.5);height:1.5px"></div>Depleted</div>
+      <div class="li"><div class="ld" style="background:rgba(200,168,75,0.8);height:2px"></div>Median</div>
+      <div class="li"><div class="ld" style="background:rgba(80,140,220,0.85);height:2.5px;border-top:2px dashed rgba(80,140,220,0.85);background:transparent"></div>Mean</div>
     </div>
     <div class="chart-area"><canvas id="chart"></canvas></div>
+    <div class="slider-section">
+      <div class="slider-row">
+        <div class="slider-header">
+          <div class="slider-label">Retirement Age</div>
+          <div class="slider-value" id="sl-ret-val">65</div>
+        </div>
+        <input type="range" id="sl-ret" min="40" max="100" value="65" step="1">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <div class="slider-label">Yearly Spend</div>
+          <div class="slider-value" id="sl-spend-val">$60K</div>
+        </div>
+        <input type="range" id="sl-spend" min="0" max="400000" value="60000" step="1000">
+      </div>
+    </div>
   </div>
 
   <div class="cta" onclick="alert('Connect this to Claude API for personalized advice!')">
@@ -180,63 +197,204 @@ body{font-family:'DM Sans',sans-serif;color:#0a0a0a;background:#f7f5f0;padding:0
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-var SP500=[0.378,0.439,-0.083,-0.255,-0.439,-0.084,0.497,0.466,-0.353,-0.011,0.467,0.319,0.134,-0.108,0.253,0.191,0.312,-0.352,0.243,0.138,0.196,0.256,0.116,-0.098,0.237,0.118,-0.100,0.240,0.111,0.239,0.188,0.314,-0.032,0.307,0.074,0.181,0.290,-0.084,-0.100,-0.119,0.239,0.111,0.240,0.118,0.212,0.114,0.264,0.145,-0.071,0.023,0.159,0.325,0.054,0.168,-0.152,0.326,0.234,0.149,-0.031,0.304,0.076,0.100,0.013,0.372,0.229,0.333,0.283,0.209,-0.090,-0.119,-0.220,0.287,0.109,0.049,0.158,0.055,-0.370,0.265,0.151,0.021,0.160,0.324,0.137,0.014,0.120,0.216,-0.001,0.119,0.218,0.285,-0.044,0.317,0.134];
-var myChart=null,simPaths=[];
-function parse(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0;}
-function fmtK(v){var a=Math.abs(v),s=v<0?'-':'';if(a>=1e6)return s+'$'+(a/1e6).toFixed(1)+'M';if(a>=1000)return s+'$'+Math.round(a/1000)+'K';return s+'$'+Math.round(a);}
-function fmt(v){return '$'+Math.round(v).toLocaleString();}
-function pick(){return SP500[Math.floor(Math.random()*SP500.length)];}
-function getInputs(){return{age:parse('i-age'),ret:parse('i-ret'),eol:parse('i-eol'),save:parse('i-save'),contrib:parse('i-contrib'),rate:parse('i-rate'),wdl:parse('i-wdl'),ss:parse('i-ss'),ssAge:parse('i-ss-age')};}
-function valid(p){return p.age&&p.ret&&p.eol&&p.ret>p.age&&p.eol>p.ret&&p.rate>0&&p.wdl>0;}
+var myChart = null;
+var simCache = null; // {paths, survived} keyed by input hash (excluding sliders)
 
-function runSims(){
-  var p=getInputs();if(!valid(p))return;
-  var ay=p.ret-p.age,dy=p.eol-p.ret,mr=p.rate/100/12,b=p.save;
-  for(var y=0;y<ay;y++)for(var m=0;m<12;m++)b=b*(1+mr)+p.contrib;
-  var grossWdl=b*(p.wdl/100)/12;simPaths=[];
-  for(var i=0;i<20;i++){
-    var bal=p.save,pts=[Math.round(bal)];
-    for(var y=0;y<ay;y++){var yr=pick()/12;for(var m=0;m<12;m++)bal=bal*(1+yr)+p.contrib;pts.push(Math.round(Math.max(bal,0)));}
-    for(var y=0;y<dy;y++){var curAge=p.ret+y,ssNow=(p.ss>0&&curAge>=p.ssAge)?p.ss:0,netWdl=Math.max(grossWdl-ssNow,0),yr=pick()/12;for(var m=0;m<12;m++){bal=bal*(1+yr)-netWdl;if(bal<0)bal=0;}pts.push(Math.round(bal));}
-    simPaths.push(pts);
-  }render();
+function parse(id) { return parseFloat(document.getElementById(id).value.replace(/,/g,'')) || 0; }
+function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M'; if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K'; return s+'$'+Math.round(a); }
+function rnd(lo, hi) { return lo + Math.random()*(hi-lo); }
+
+function getParams() {
+  return {
+    age:    parse('i-age'),
+    eol:    parse('i-eol'),
+    save:   parse('i-save'),
+    contrib:parse('i-contrib'),
+    retLo:  parse('i-ret-lo')/100,
+    retHi:  parse('i-ret-hi')/100,
+    infLo:  parse('i-inf-lo')/100,
+    infHi:  parse('i-inf-hi')/100,
+    ss:     parse('i-ss'),
+    ssAge:  parse('i-ss-age'),
+    retAge: parseInt(document.getElementById('sl-ret').value),
+    spend:  parseInt(document.getElementById('sl-spend').value),
+    logScale: document.getElementById('log-toggle').checked
+  };
 }
 
-function render(){
-  var p=getInputs(),showSim=document.getElementById('sim-toggle').checked;
-  if(!valid(p))return;
-  var rate=p.rate/100/12,ay=p.ret-p.age,dy=p.eol-p.ret,bal=p.save,tc=p.save;
-  var labels=[],totals=[],cline=[],dline=[];
-  for(var y=0;y<=ay;y++){labels.push(Math.round(p.age+y));totals.push(Math.round(bal));cline.push(Math.round(tc));dline.push(null);if(y<ay)for(var m=0;m<12;m++){bal=bal*(1+rate)+p.contrib;tc+=p.contrib;}}
-  var retBal=totals[totals.length-1],grossWdl=retBal*(p.wdl/100)/12,db=retBal;
-  for(var y=1;y<=dy;y++){var curAge=p.ret+y,ssNow=(p.ss>0&&curAge>=p.ssAge)?p.ss:0,netWdl=Math.max(grossWdl-ssNow,0);for(var m=0;m<12;m++)db=db*(1+rate)-netWdl;labels.push(Math.round(p.ret+y));totals.push(null);cline.push(null);dline.push(Math.round(Math.max(db,0)));}
-  var finalBal=dline[dline.length-1],ssActive=p.ss>0&&p.ssAge<=p.eol,ssAtRet=ssActive&&p.ssAge<=p.ret?p.ss:0;
-  document.getElementById('r-total').textContent=fmtK(retBal);
-  document.getElementById('r-years').textContent='in '+ay+' years';
-  document.getElementById('r-income').textContent=fmt(grossWdl+ssAtRet)+'/mo';
-  document.getElementById('r-income-sub').textContent=ssAtRet>0?'savings + SS at retirement':'from savings (SS starts age '+p.ssAge+')';
-  document.getElementById('r-from-savings').textContent=fmt(grossWdl)+'/mo';
-  document.getElementById('r-savings-sub').textContent=p.wdl+'% withdrawal rule';
-  document.getElementById('r-from-ss').textContent=ssActive?fmt(p.ss)+'/mo':'$0/mo';
-  document.getElementById('r-ss-sub').textContent=ssActive?'starting age '+p.ssAge:'not configured';
-  document.getElementById('r-eol').textContent=fmtK(Math.max(finalBal,0));
-  document.getElementById('r-eol-sub').textContent='at age '+p.eol;
-  document.getElementById('bk-contrib').textContent=fmtK(tc);
-  document.getElementById('bk-total').textContent=fmtK(retBal);
-  document.getElementById('bk-eol').textContent=fmtK(Math.max(finalBal,0));
-  document.getElementById('resim').style.display=showSim?'inline-block':'none';
-  document.getElementById('leg-sim').style.display=showSim?'flex':'none';
-  var datasets=[];
-  if(showSim&&simPaths.length>0)simPaths.forEach(function(pt){datasets.push({data:pt,borderColor:'rgba(80,140,220,0.18)',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:0,borderWidth:1,order:5});});
-  datasets.push({label:'Contributions',data:cline,borderColor:'#bbb',backgroundColor:'transparent',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[5,3],spanGaps:false,order:3});
-  datasets.push({label:'Fixed Balance',data:totals,borderColor:'#c8a84b',backgroundColor:'rgba(200,168,75,0.07)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
-  datasets.push({label:'Drawdown',data:dline,borderColor:'#e05a5a',backgroundColor:'rgba(224,90,90,0.06)',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5,spanGaps:false,order:2});
-  if(myChart)myChart.destroy();
-  myChart=new Chart(document.getElementById('chart'),{type:'line',data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{display:false},tooltip:{filter:function(i){return !!i.dataset.label;},callbacks:{label:function(i){return i.dataset.label+': '+fmtK(i.raw);}}}},scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},maxTicksLimit:8}},y:{min:0,grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#aaa',font:{size:11},callback:function(v){return fmtK(v);}}}}}});
+function valid(p) {
+  return p.age > 0 && p.eol > p.age && p.retLo >= 0 && p.retHi >= p.retLo;
 }
 
-document.getElementById('sim-toggle').addEventListener('change',function(){if(this.checked&&simPaths.length===0)runSims();else render();});
-['i-age','i-ret','i-eol','i-save','i-contrib','i-rate','i-wdl','i-ss','i-ss-age'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){simPaths=[];if(document.getElementById('sim-toggle').checked)runSims();else render();});});
+function simulate(p) {
+  var N = 50;
+  var paths = [], survived = [];
+  var years = p.eol - p.age;
+
+  for (var i = 0; i < N; i++) {
+    var ret = rnd(p.retLo, p.retHi);
+    var inf = rnd(p.infLo, p.infHi);
+    var bal = p.save;
+    var pts = [Math.round(bal)];
+
+    for (var y = 1; y <= years; y++) {
+      var age = p.age + y;
+      if (age <= p.retAge) {
+        // Accumulation
+        bal = bal * (1 + ret) + p.contrib;
+      } else {
+        // Drawdown
+        var dy = age - p.retAge;
+        var nomSpend = p.spend * Math.pow(1 + inf, dy);
+        var ssNow = (p.ss > 0 && age >= p.ssAge) ? p.ss * Math.pow(1 + inf, dy) : 0;
+        var netWdl = Math.max(nomSpend - ssNow, 0);
+        bal = bal * (1 + ret) - netWdl;
+        if (bal < 0) bal = 0;
+      }
+      pts.push(Math.round(bal));
+    }
+
+    paths.push(pts);
+    survived.push(pts[pts.length - 1] > 0);
+  }
+  return { paths: paths, survived: survived };
+}
+
+function median(arr) {
+  var s = arr.slice().sort(function(a,b){return a-b;});
+  var m = Math.floor(s.length/2);
+  return s.length % 2 ? s[m] : (s[m-1]+s[m])/2;
+}
+
+function mean(arr) {
+  return arr.reduce(function(a,b){return a+b;},0) / arr.length;
+}
+
+function render() {
+  var p = getParams();
+  if (!valid(p)) return;
+
+  // Update slider range bounds
+  var slRet = document.getElementById('sl-ret');
+  slRet.min = p.age;
+  slRet.max = p.eol;
+  if (p.retAge < p.age) { slRet.value = p.age; p.retAge = p.age; }
+  if (p.retAge > p.eol) { slRet.value = p.eol; p.retAge = p.eol; }
+
+  document.getElementById('sl-ret-val').textContent = p.retAge;
+  document.getElementById('sl-spend-val').textContent = fmtK(p.spend);
+
+  var sim = simulate(p);
+  var paths = sim.paths, survived = sim.survived;
+
+  var years = p.eol - p.age;
+  var labels = [];
+  for (var y = 0; y <= years; y++) labels.push(p.age + y);
+
+  // Aggregate median and mean per year
+  var medLine = [], meanLine = [];
+  for (var y = 0; y <= years; y++) {
+    var col = paths.map(function(pt){ return pt[y]; });
+    medLine.push(median(col));
+    meanLine.push(mean(col));
+  }
+
+  // Result cards
+  var retIdx = p.retAge - p.age;
+  var retVals = paths.map(function(pt){ return pt[Math.min(retIdx, pt.length-1)]; });
+  var medAtRet = median(retVals);
+  var nSurvive = survived.filter(Boolean).length;
+
+  document.getElementById('r-median').textContent = fmtK(medAtRet);
+  document.getElementById('r-median-sub').textContent = 'at retirement age ' + p.retAge;
+  document.getElementById('r-survive').textContent = nSurvive + ' / 50';
+  document.getElementById('r-survive-sub').textContent = 'portfolios > $0 at age ' + p.eol;
+
+  // Build datasets
+  var datasets = [];
+
+  // Individual sim paths
+  paths.forEach(function(pts, i) {
+    var color = survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
+    datasets.push({
+      data: pts,
+      borderColor: color,
+      backgroundColor: 'transparent',
+      fill: false,
+      tension: 0.3,
+      pointRadius: 0,
+      borderWidth: 1,
+      order: 10
+    });
+  });
+
+  // Median line
+  datasets.push({
+    label: 'Median',
+    data: medLine,
+    borderColor: 'rgba(200,168,75,0.85)',
+    backgroundColor: 'transparent',
+    fill: false,
+    tension: 0.4,
+    pointRadius: 0,
+    borderWidth: 2,
+    order: 2
+  });
+
+  // Mean line (dashed)
+  datasets.push({
+    label: 'Mean',
+    data: meanLine,
+    borderColor: 'rgba(80,140,220,0.85)',
+    backgroundColor: 'transparent',
+    fill: false,
+    tension: 0.4,
+    pointRadius: 0,
+    borderWidth: 2.5,
+    borderDash: [8, 4],
+    order: 1
+  });
+
+  var logScale = p.logScale;
+  var yConfig = logScale
+    ? { type: 'logarithmic', min: 1, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} }
+    : { type: 'linear',      min: 0, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} };
+
+  if (myChart) myChart.destroy();
+  myChart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          filter: function(i) { return !!i.dataset.label; },
+          callbacks: { label: function(i) { return i.dataset.label + ': ' + fmtK(i.raw); } }
+        }
+      },
+      scales: {
+        x: { grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, maxTicksLimit:10} },
+        y: yConfig
+      }
+    }
+  });
+}
+
+// Input listeners — re-simulate on param changes
+['i-age','i-eol','i-save','i-contrib','i-ret-lo','i-ret-hi','i-inf-lo','i-inf-hi','i-ss','i-ss-age'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', render);
+});
+
+// Slider listeners
+document.getElementById('sl-ret').addEventListener('input', render);
+document.getElementById('sl-spend').addEventListener('input', render);
+
+// Log toggle
+document.getElementById('log-toggle').addEventListener('change', render);
+
 render();
 </script>
 </body>
