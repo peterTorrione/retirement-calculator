@@ -172,7 +172,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
       <div class="rc-value" id="r-median">--</div>
       <div class="rc-sub" id="r-median-sub">--</div>
     </div>
-    <div class="rc">
+    <div class="rc dark">
       <div class="rc-label">Median at End of Simulation</div>
       <div class="rc-value" id="r-med-end">--</div>
       <div class="rc-sub" id="r-med-end-sub">--</div>
@@ -459,7 +459,7 @@ function render() {
       : survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
     datasets.push({
       data: pts,
-      simParams: { ret: sim.params[i].ret, inf: sim.params[i].inf },
+      simParams: { ret: sim.params[i].ret, inf: sim.params[i].inf, idx: i + 1 },
       borderColor: color,
       backgroundColor: 'transparent',
       fill: false,
@@ -539,7 +539,11 @@ function render() {
             label: function(item) {
               var sp = item.dataset.simParams;
               if (sp) {
-                return 'Return: ' + (sp.ret * 100).toFixed(1) + '%  |  Inflation: ' + (sp.inf * 100).toFixed(1) + '%';
+                var age = item.chart.data.labels[item.dataIndex];
+                return [
+                  'Run #' + sp.idx + '  •  Age: ' + age,
+                  'Return: ' + (sp.ret * 100).toFixed(1) + '%  |  Inflation: ' + (sp.inf * 100).toFixed(1) + '%'
+                ];
               }
               return item.dataset.label + ': ' + fmtK(item.raw);
             }
