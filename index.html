@@ -231,7 +231,7 @@ function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e
 function rnd(lo, hi) { return lo + Math.random()*(hi-lo); }
 
 var PRESETS = {
-  pessimistic: { retLo: 2, retHi: 6,  infLo: 3, infHi: 6 },
+  pessimistic: { retLo: 2, retHi: 6,  infLo: 3, infHi: 5 },
   typical:     { retLo: 6, retHi: 10, infLo: 1, infHi: 4 },
   optimistic:  { retLo: 7, retHi: 14, infLo: 1, infHi: 3 }
 };
@@ -423,6 +423,7 @@ function render() {
     fill: false,
     tension: 0.4,
     pointRadius: 0,
+    pointHoverRadius: 4,
     borderWidth: 2,
     order: 2
   });
@@ -436,6 +437,7 @@ function render() {
     fill: false,
     tension: 0.4,
     pointRadius: 0,
+    pointHoverRadius: 4,
     borderWidth: 2.5,
     borderDash: [8, 4],
     order: 1
