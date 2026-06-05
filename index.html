@@ -140,6 +140,21 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
     <div class="ss-note">SS benefit (inflation-adjusted) offsets yearly spend. Set to $0 to exclude.</div>
   </div>
 
+  <div class="section-label">Spend Decrease</div>
+  <div class="fields">
+    <div class="two-col">
+      <div>
+        <div class="field-label">Decrease Per Year</div>
+        <div class="input-wrap"><input type="text" id="i-sdec" value="0"><span class="input-suffix">%</span></div>
+      </div>
+      <div>
+        <div class="field-label">Start Age</div>
+        <div class="input-wrap"><input type="text" id="i-sdec-age" value="67"><span class="input-suffix">yrs</span></div>
+      </div>
+    </div>
+    <div class="ss-note">Spending decreases by this % each year after the given age, on top of inflation.</div>
+  </div>
+
   <div class="divider"></div>
 
   <div class="results">
@@ -184,20 +199,6 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
           <div class="slider-value" id="sl-spend-val">$60K</div>
         </div>
         <input type="range" id="sl-spend" min="0" max="400000" value="60000" step="1000">
-      </div>
-      <div class="slider-row">
-        <div class="slider-header">
-          <div class="slider-label">Spend Decrease Per Year</div>
-          <div class="slider-value" id="sl-sdec-val">1.0%</div>
-        </div>
-        <input type="range" id="sl-sdec" min="0" max="10" value="1" step="0.1">
-      </div>
-      <div class="slider-row">
-        <div class="slider-header">
-          <div class="slider-label">Spend Decrease Age Start</div>
-          <div class="slider-value" id="sl-sdec-age-val">67</div>
-        </div>
-        <input type="range" id="sl-sdec-age" min="40" max="100" value="67" step="1">
       </div>
     </div>
   </div>
@@ -255,8 +256,8 @@ function getParams() {
     ssAge:  parse('i-ss-age'),
     retAge:     parseInt(document.getElementById('sl-ret').value),
     spend:      parseInt(document.getElementById('sl-spend').value),
-    spendDec:   parseFloat(document.getElementById('sl-sdec').value) / 100,
-    spendDecAge:parseInt(document.getElementById('sl-sdec-age').value),
+    spendDec:   parse('i-sdec') / 100,
+    spendDecAge:parse('i-sdec-age'),
     logScale:   document.getElementById('log-toggle').checked
   };
 }
@@ -324,8 +325,7 @@ function render() {
 
   document.getElementById('sl-ret-val').textContent = p.retAge;
   document.getElementById('sl-spend-val').textContent = fmtK(p.spend);
-  document.getElementById('sl-sdec-val').textContent = (p.spendDec * 100).toFixed(1) + '%';
-  document.getElementById('sl-sdec-age-val').textContent = p.spendDecAge;
+
 
   var sim = simulate(p);
   var paths = sim.paths, survived = sim.survived;
@@ -460,8 +460,8 @@ function render() {
 // Slider listeners
 document.getElementById('sl-ret').addEventListener('input', render);
 document.getElementById('sl-spend').addEventListener('input', render);
-document.getElementById('sl-sdec').addEventListener('input', render);
-document.getElementById('sl-sdec-age').addEventListener('input', render);
+document.getElementById('i-sdec').addEventListener('input', render);
+document.getElementById('i-sdec-age').addEventListener('input', render);
 
 // Log toggle
 document.getElementById('log-toggle').addEventListener('change', render);
