@@ -237,7 +237,36 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 var myChart = null;
-var simCache = null; // {paths, survived} keyed by input hash (excluding sliders)
+var simCache = null;
+var currentRetAge = 65;
+
+var retLinePlugin = {
+  id: 'retLine',
+  afterDraw: function(chart) {
+    var xAxis = chart.scales.x, yAxis = chart.scales.y;
+    if (!xAxis || !yAxis) return;
+    var labels = chart.data.labels;
+    var idx = labels.indexOf(currentRetAge);
+    if (idx === -1) return;
+    var x = xAxis.getPixelForValue(idx);
+    var ctx = chart.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, yAxis.top);
+    ctx.lineTo(x, yAxis.bottom);
+    ctx.strokeStyle = 'rgba(200,168,75,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.stroke();
+    // Label
+    ctx.setLineDash([]);
+    ctx.font = '500 10px DM Sans, sans-serif';
+    ctx.fillStyle = 'rgba(200,168,75,0.9)';
+    ctx.textAlign = 'center';
+    ctx.fillText('Retire ' + currentRetAge, x, yAxis.top - 4);
+    ctx.restore();
+  }
+};
 
 function parse(id) { return parseFloat(document.getElementById(id).value.replace(/,/g,'')) || 0; }
 function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M'; if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K'; return s+'$'+Math.round(a); }
@@ -415,6 +444,8 @@ function render() {
   document.getElementById('r-fivex-sub').textContent   = 'end value > 5× retirement balance';
   updatePresetButtons();
 
+  currentRetAge = p.retAge;
+
   // Build datasets
   var datasets = [];
 
@@ -492,11 +523,13 @@ function render() {
   if (myChart) myChart.destroy();
   myChart = new Chart(document.getElementById('chart'), {
     type: 'line',
+    plugins: [retLinePlugin],
     data: { labels: labels, datasets: datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 200 },
+      layout: { padding: { top: 14 } },
       plugins: {
         legend: { display: false },
         tooltip: {
