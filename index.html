@@ -149,21 +149,6 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
     <div class="ss-note">SS benefit (inflation-adjusted) offsets yearly spend. Set to $0 to exclude.</div>
   </div>
 
-  <div class="section-label">Spend Decrease</div>
-  <div class="fields">
-    <div class="two-col">
-      <div>
-        <div class="field-label">Decrease Per Year</div>
-        <div class="input-wrap"><input type="text" id="i-sdec" value="0"><span class="input-suffix">%</span></div>
-      </div>
-      <div>
-        <div class="field-label">Start Age</div>
-        <div class="input-wrap"><input type="text" id="i-sdec-age" value="67"><span class="input-suffix">yrs</span></div>
-      </div>
-    </div>
-    <div class="ss-note">Spending decreases by this % each year after the given age, on top of inflation.</div>
-  </div>
-
   <div class="divider"></div>
 
   <div class="results">
@@ -223,6 +208,21 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
         <input type="range" id="sl-spend" min="0" max="400000" value="60000" step="1000">
       </div>
     </div>
+  </div>
+
+  <div class="section-label">Spend Decrease</div>
+  <div class="fields" style="margin-bottom:1rem">
+    <div class="two-col">
+      <div>
+        <div class="field-label">Decrease Per Year</div>
+        <div class="input-wrap"><input type="text" id="i-sdec" value="0"><span class="input-suffix">%</span></div>
+      </div>
+      <div>
+        <div class="field-label">Start Age</div>
+        <div class="input-wrap"><input type="text" id="i-sdec-age" value="67"><span class="input-suffix">yrs</span></div>
+      </div>
+    </div>
+    <div class="ss-note">Spending decreases by this % each year after the given age, on top of inflation.</div>
   </div>
 
   <div class="cta" onclick="alert('Connect this to Claude API for personalized advice!')">
