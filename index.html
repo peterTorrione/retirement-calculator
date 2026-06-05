@@ -157,7 +157,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 
   <div class="chart-wrap">
     <div class="chart-header">
-      <div class="chart-title">Lifetime projection — 50 scenarios</div>
+      <div class="chart-title">Lifetime projection — 100 scenarios</div>
       <div class="toggle-row" style="padding:6px 10px;margin-bottom:0;background:transparent;gap:8px">
         <div class="tl" style="font-size:12px">Log scale</div>
         <label class="sw"><input type="checkbox" id="log-toggle"><span class="sw-track"></span></label>
@@ -184,6 +184,20 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
           <div class="slider-value" id="sl-spend-val">$60K</div>
         </div>
         <input type="range" id="sl-spend" min="0" max="400000" value="60000" step="1000">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <div class="slider-label">Spend Decrease Per Year</div>
+          <div class="slider-value" id="sl-sdec-val">1.0%</div>
+        </div>
+        <input type="range" id="sl-sdec" min="0" max="10" value="1" step="0.1">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <div class="slider-label">Spend Decrease Age Start</div>
+          <div class="slider-value" id="sl-sdec-age-val">67</div>
+        </div>
+        <input type="range" id="sl-sdec-age" min="40" max="100" value="67" step="1">
       </div>
     </div>
   </div>
@@ -239,9 +253,11 @@ function getParams() {
     infHi:  parse('i-inf-hi')/100,
     ss:     parse('i-ss'),
     ssAge:  parse('i-ss-age'),
-    retAge: parseInt(document.getElementById('sl-ret').value),
-    spend:  parseInt(document.getElementById('sl-spend').value),
-    logScale: document.getElementById('log-toggle').checked
+    retAge:     parseInt(document.getElementById('sl-ret').value),
+    spend:      parseInt(document.getElementById('sl-spend').value),
+    spendDec:   parseFloat(document.getElementById('sl-sdec').value) / 100,
+    spendDecAge:parseInt(document.getElementById('sl-sdec-age').value),
+    logScale:   document.getElementById('log-toggle').checked
   };
 }
 
@@ -250,8 +266,8 @@ function valid(p) {
 }
 
 function simulate(p) {
-  var N = 50;
-  var paths = [], survived = [];
+  var N = 100;
+  var paths = [], survived = [], params = [];
   var years = p.eol - p.age;
 
   for (var i = 0; i < N; i++) {
@@ -268,7 +284,8 @@ function simulate(p) {
       } else {
         // Drawdown
         var dy = age - p.retAge;
-        var nomSpend = p.spend * Math.pow(1 + inf, dy);
+        var spendDecYears = Math.max(age - p.spendDecAge, 0);
+        var nomSpend = p.spend * Math.pow(1 + inf, dy) * Math.pow(1 - p.spendDec, spendDecYears);
         var ssNow = (p.ss > 0 && age >= p.ssAge) ? p.ss * Math.pow(1 + inf, dy) : 0;
         var netWdl = Math.max(nomSpend - ssNow, 0);
         bal = bal * (1 + ret) - netWdl;
@@ -279,8 +296,9 @@ function simulate(p) {
 
     paths.push(pts);
     survived.push(pts[pts.length - 1] > 0);
+    params.push({ ret: ret, inf: inf });
   }
-  return { paths: paths, survived: survived };
+  return { paths: paths, survived: survived, params: params };
 }
 
 function median(arr) {
@@ -306,6 +324,8 @@ function render() {
 
   document.getElementById('sl-ret-val').textContent = p.retAge;
   document.getElementById('sl-spend-val').textContent = fmtK(p.spend);
+  document.getElementById('sl-sdec-val').textContent = (p.spendDec * 100).toFixed(1) + '%';
+  document.getElementById('sl-sdec-age-val').textContent = p.spendDecAge;
 
   var sim = simulate(p);
   var paths = sim.paths, survived = sim.survived;
@@ -330,7 +350,7 @@ function render() {
 
   document.getElementById('r-median').textContent = fmtK(medAtRet);
   document.getElementById('r-median-sub').textContent = 'at retirement age ' + p.retAge;
-  document.getElementById('r-survive').textContent = nSurvive + ' / 50';
+  document.getElementById('r-survive').textContent = nSurvive + ' / 100';
   document.getElementById('r-survive-sub').textContent = 'portfolios > $0 at age ' + p.eol;
 
   // Build datasets
@@ -341,11 +361,13 @@ function render() {
     var color = survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
     datasets.push({
       data: pts,
+      simParams: { ret: sim.params[i].ret, inf: sim.params[i].inf },
       borderColor: color,
       backgroundColor: 'transparent',
       fill: false,
       tension: 0.3,
       pointRadius: 0,
+      pointHoverRadius: 3,
       borderWidth: 1,
       order: 10
     });
@@ -393,8 +415,8 @@ function render() {
     // Use 80th-percentile of per-path max values as the upper limit
     var pathMaxes = paths.map(function(pts){ return Math.max.apply(null, pts); });
     pathMaxes.sort(function(a,b){return a-b;});
-    var p80idx = Math.floor(pathMaxes.length * 0.8);
-    var yMax = pathMaxes[Math.min(p80idx, pathMaxes.length-1)];
+    var p75idx = Math.floor(pathMaxes.length * 0.75);
+    var yMax = pathMaxes[Math.min(p75idx, pathMaxes.length-1)];
     yConfig = { type: 'linear', min: 0, max: yMax, grid: {color:'rgba(0,0,0,0.05)'}, ticks: {color:'#aaa', font:{size:11}, callback: function(v){ return fmtK(v); }} };
   }
 
@@ -409,8 +431,17 @@ function render() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          filter: function(i) { return !!i.dataset.label; },
-          callbacks: { label: function(i) { return i.dataset.label + ': ' + fmtK(i.raw); } }
+          mode: 'nearest',
+          intersect: true,
+          callbacks: {
+            label: function(item) {
+              var sp = item.dataset.simParams;
+              if (sp) {
+                return 'Return: ' + (sp.ret * 100).toFixed(1) + '%  |  Inflation: ' + (sp.inf * 100).toFixed(1) + '%';
+              }
+              return item.dataset.label + ': ' + fmtK(item.raw);
+            }
+          }
         }
       },
       scales: {
@@ -429,6 +460,8 @@ function render() {
 // Slider listeners
 document.getElementById('sl-ret').addEventListener('input', render);
 document.getElementById('sl-spend').addEventListener('input', render);
+document.getElementById('sl-sdec').addEventListener('input', render);
+document.getElementById('sl-sdec-age').addEventListener('input', render);
 
 // Log toggle
 document.getElementById('log-toggle').addEventListener('change', render);
