@@ -185,11 +185,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
       </div>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:rgba(200,168,75,0.7);height:1.5px"></div>5× growth</div>
-      <div class="li"><div class="ld" style="background:rgba(80,180,100,0.5);height:1.5px"></div>Surviving</div>
-      <div class="li"><div class="ld" style="background:rgba(220,80,80,0.5);height:1.5px"></div>Depleted</div>
-      <div class="li"><div class="ld" style="background:rgba(200,168,75,1);height:2px"></div>Median</div>
-      <div class="li"><div class="ld" style="background:transparent;border-top:2px dashed rgba(80,140,220,0.85)"></div>Mean</div>
+      <div class="li"><div class="ld" style="background:rgba(230,140,30,0.8);height:3px"></div>5× growth</div>
+      <div class="li"><div class="ld" style="background:rgba(80,180,100,0.7);height:3px"></div>Surviving</div>
+      <div class="li"><div class="ld" style="background:rgba(220,80,80,0.7);height:3px"></div>Depleted</div>
+      <div class="li"><div class="ld" style="background:rgba(200,168,75,1);height:3px"></div>Median</div>
+      <div class="li"><div class="ld" style="background:transparent;border-top:3px dashed rgba(80,140,220,0.85)"></div>Mean</div>
     </div>
     <div class="chart-area"><canvas id="chart"></canvas></div>
     <div class="slider-section">
@@ -455,7 +455,7 @@ function render() {
     var endVal = pts[pts.length - 1];
     var retVal = pts[Math.min(retIdx, pts.length - 1)];
     var color = (endVal > 5 * retVal && retVal > 0)
-      ? 'rgba(200,168,75,0.5)'
+      ? 'rgba(230,140,30,0.4)'
       : survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
     datasets.push({
       data: pts,
