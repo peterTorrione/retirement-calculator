@@ -96,7 +96,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
     <div class="two-col">
       <div>
         <div class="field-label">Starting Investment</div>
-        <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-save" value="100000"></div>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="text" id="i-save" value="1000000"></div>
       </div>
       <div>
         <div class="field-label">Yearly Contribution</div>
@@ -188,10 +188,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
       </div>
     </div>
     <div class="legend">
+      <div class="li"><div class="ld" style="background:rgba(200,168,75,0.7);height:1.5px"></div>5× growth</div>
       <div class="li"><div class="ld" style="background:rgba(80,180,100,0.5);height:1.5px"></div>Surviving</div>
       <div class="li"><div class="ld" style="background:rgba(220,80,80,0.5);height:1.5px"></div>Depleted</div>
-      <div class="li"><div class="ld" style="background:rgba(200,168,75,0.8);height:2px"></div>Median</div>
-      <div class="li"><div class="ld" style="background:rgba(80,140,220,0.85);height:2.5px;border-top:2px dashed rgba(80,140,220,0.85);background:transparent"></div>Mean</div>
+      <div class="li"><div class="ld" style="background:rgba(200,168,75,1);height:2px"></div>Median</div>
+      <div class="li"><div class="ld" style="background:transparent;border-top:2px dashed rgba(80,140,220,0.85)"></div>Mean</div>
     </div>
     <div class="chart-area"><canvas id="chart"></canvas></div>
     <div class="slider-section">
@@ -274,10 +275,8 @@ function addCommas(el) {
 
 ['i-save','i-contrib','i-ss'].forEach(function(id) {
   var el = document.getElementById(id);
-  el.addEventListener('blur', function(){ addCommas(this); });
-  el.addEventListener('keydown', function(e){
-    if(e.key==='Enter') addCommas(this);
-  });
+  el.addEventListener('input', function(){ addCommas(this); });
+  el.addEventListener('blur',  function(){ addCommas(this); });
   // Format initial value
   addCommas(el);
 });
@@ -398,8 +397,13 @@ function render() {
   var datasets = [];
 
   // Individual sim paths
+  var retIdx = p.retAge - p.age;
   paths.forEach(function(pts, i) {
-    var color = survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
+    var endVal = pts[pts.length - 1];
+    var retVal = pts[Math.min(retIdx, pts.length - 1)];
+    var color = (endVal > 5 * retVal && retVal > 0)
+      ? 'rgba(200,168,75,0.5)'
+      : survived[i] ? 'rgba(80,180,100,0.18)' : 'rgba(220,80,80,0.18)';
     datasets.push({
       data: pts,
       simParams: { ret: sim.params[i].ret, inf: sim.params[i].inf },
