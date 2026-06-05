@@ -61,6 +61,10 @@ input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2p
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#c8a84b;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:transform .15s}
 input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#c8a84b;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+.preset-row{display:flex;gap:0.5rem;margin-bottom:0.75rem}
+.preset-btn{flex:1;padding:7px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;border-radius:7px;border:1px solid #e0ddd6;background:#fff;color:#666;cursor:pointer;letter-spacing:0.03em;transition:all .15s}
+.preset-btn:hover{border-color:#c8a84b;color:#0a0a0a}
+.preset-btn.active{background:#c8a84b;border-color:#c8a84b;color:#0a0a0a}
 .cta{background:#c8a84b;border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .cta:hover{background:#b8983b}
 .cta-text{font-size:14px;font-weight:500;color:#0a0a0a}
@@ -82,11 +86,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
     <div class="two-col">
       <div>
         <div class="field-label">Current Age</div>
-        <div class="input-wrap"><input type="text" id="i-age" value="40"><span class="input-suffix">yrs</span></div>
+        <div class="input-wrap"><input type="text" id="i-age" value="50"><span class="input-suffix">yrs</span></div>
       </div>
       <div>
         <div class="field-label">Final Age</div>
-        <div class="input-wrap"><input type="text" id="i-eol" value="100"><span class="input-suffix">yrs</span></div>
+        <div class="input-wrap"><input type="text" id="i-eol" value="90"><span class="input-suffix">yrs</span></div>
       </div>
     </div>
     <div class="two-col">
@@ -102,6 +106,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   </div>
 
   <div class="section-label">Returns &amp; Inflation</div>
+  <div class="preset-row">
+    <button class="preset-btn" id="btn-pessimistic" onclick="applyPreset('pessimistic')">Pessimistic</button>
+    <button class="preset-btn" id="btn-typical"     onclick="applyPreset('typical')">Typical</button>
+    <button class="preset-btn" id="btn-optimistic"  onclick="applyPreset('optimistic')">Optimistic</button>
+  </div>
   <div class="fields">
     <div class="two-col">
       <div>
@@ -220,6 +229,37 @@ var simCache = null; // {paths, survived} keyed by input hash (excluding sliders
 function parse(id) { return parseFloat(document.getElementById(id).value.replace(/,/g,'')) || 0; }
 function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e6).toFixed(1)+'M'; if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K'; return s+'$'+Math.round(a); }
 function rnd(lo, hi) { return lo + Math.random()*(hi-lo); }
+
+var PRESETS = {
+  pessimistic: { retLo: 2, retHi: 6,  infLo: 3, infHi: 6 },
+  typical:     { retLo: 4, retHi: 10, infLo: 1, infHi: 4 },
+  optimistic:  { retLo: 7, retHi: 14, infLo: 1, infHi: 3 }
+};
+
+function applyPreset(name) {
+  var p = PRESETS[name];
+  document.getElementById('i-ret-lo').value = p.retLo;
+  document.getElementById('i-ret-hi').value = p.retHi;
+  document.getElementById('i-inf-lo').value = p.infLo;
+  document.getElementById('i-inf-hi').value = p.infHi;
+  ['pessimistic','typical','optimistic'].forEach(function(k) {
+    document.getElementById('btn-' + k).classList.toggle('active', k === name);
+  });
+  renderAndSave();
+}
+
+function updatePresetButtons() {
+  var retLo = parse('i-ret-lo'), retHi = parse('i-ret-hi');
+  var infLo = parse('i-inf-lo'), infHi = parse('i-inf-hi');
+  var matched = null;
+  Object.keys(PRESETS).forEach(function(k) {
+    var p = PRESETS[k];
+    if (p.retLo === retLo && p.retHi === retHi && p.infLo === infLo && p.infHi === infHi) matched = k;
+  });
+  ['pessimistic','typical','optimistic'].forEach(function(k) {
+    document.getElementById('btn-' + k).classList.toggle('active', k === matched);
+  });
+}
 
 function addCommas(el) {
   var raw = el.value.replace(/,/g,'');
@@ -352,6 +392,7 @@ function render() {
   document.getElementById('r-median-sub').textContent = 'at retirement age ' + p.retAge;
   document.getElementById('r-survive').textContent = nSurvive + ' / 100';
   document.getElementById('r-survive-sub').textContent = 'portfolios > $0 at age ' + p.eol;
+  updatePresetButtons();
 
   // Build datasets
   var datasets = [];
