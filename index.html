@@ -273,7 +273,7 @@ function fmtK(v) { var a=Math.abs(v),s=v<0?'-':''; if(a>=1e6) return s+'$'+(a/1e
 function rnd(lo, hi) { return lo + Math.random()*(hi-lo); }
 
 var PRESETS = {
-  pessimistic: { retLo: 2, retHi: 6,  infLo: 3, infHi: 5 },
+  pessimistic: { retLo: 5, retHi: 6,  infLo: 3, infHi: 4 },
   typical:     { retLo: 6, retHi: 10, infLo: 1, infHi: 4 },
   optimistic:  { retLo: 7, retHi: 14, infLo: 1, infHi: 3 }
 };
