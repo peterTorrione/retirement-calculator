@@ -452,21 +452,61 @@ function render() {
   });
 }
 
+// URL state persistence
+var TEXT_IDS = ['i-age','i-eol','i-save','i-contrib','i-ret-lo','i-ret-hi','i-inf-lo','i-inf-hi','i-ss','i-ss-age','i-sdec','i-sdec-age'];
+var SLIDER_IDS = ['sl-ret','sl-spend'];
+
+function saveToURL() {
+  var params = new URLSearchParams();
+  TEXT_IDS.forEach(function(id) {
+    params.set(id, document.getElementById(id).value.replace(/,/g,''));
+  });
+  SLIDER_IDS.forEach(function(id) {
+    params.set(id, document.getElementById(id).value);
+  });
+  params.set('log', document.getElementById('log-toggle').checked ? '1' : '0');
+  history.replaceState(null, '', '?' + params.toString());
+}
+
+function loadFromURL() {
+  var params = new URLSearchParams(window.location.search);
+  if (!params.has('i-age')) return; // nothing saved
+  TEXT_IDS.forEach(function(id) {
+    if (params.has(id)) {
+      var el = document.getElementById(id);
+      el.value = params.get(id);
+      // reformat dollar fields with commas
+      if (id === 'i-save' || id === 'i-contrib' || id === 'i-ss') addCommas(el);
+    }
+  });
+  SLIDER_IDS.forEach(function(id) {
+    if (params.has(id)) document.getElementById(id).value = params.get(id);
+  });
+  if (params.has('log')) {
+    document.getElementById('log-toggle').checked = params.get('log') === '1';
+  }
+}
+
+function renderAndSave() {
+  render();
+  saveToURL();
+}
+
 // Input listeners — re-simulate on param changes
-['i-age','i-eol','i-save','i-contrib','i-ret-lo','i-ret-hi','i-inf-lo','i-inf-hi','i-ss','i-ss-age'].forEach(function(id) {
-  document.getElementById(id).addEventListener('input', render);
+TEXT_IDS.forEach(function(id) {
+  document.getElementById(id).addEventListener('input', renderAndSave);
 });
 
 // Slider listeners
-document.getElementById('sl-ret').addEventListener('input', render);
-document.getElementById('sl-spend').addEventListener('input', render);
-document.getElementById('i-sdec').addEventListener('input', render);
-document.getElementById('i-sdec-age').addEventListener('input', render);
+SLIDER_IDS.forEach(function(id) {
+  document.getElementById(id).addEventListener('input', renderAndSave);
+});
 
 // Log toggle
-document.getElementById('log-toggle').addEventListener('change', render);
+document.getElementById('log-toggle').addEventListener('change', renderAndSave);
 
-render();
+loadFromURL();
+renderAndSave();
 </script>
 </body>
 </html>
