@@ -225,12 +225,12 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
     <div class="ss-note">Spending decreases by this % each year after the given age, on top of inflation.</div>
   </div>
 
-  <div class="cta" onclick="alert('Connect this to Claude API for personalized advice!')">
+  <div class="cta" id="copy-btn" onclick="copyURL()">
     <div>
-      <div class="cta-text">Get personalized advice</div>
-      <div class="cta-sub">Analyze your retirement plan</div>
+      <div class="cta-text" id="copy-text">Click to copy simulation URL</div>
+      <div class="cta-sub" id="copy-sub">Share or bookmark your current settings</div>
     </div>
-    <div style="font-size:18px">&#8594;</div>
+    <div style="font-size:18px">&#128279;</div>
   </div>
 </div>
 
@@ -557,6 +557,17 @@ function render() {
         y: yConfig
       }
     }
+  });
+}
+
+function copyURL() {
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    document.getElementById('copy-text').textContent = 'Copied!';
+    document.getElementById('copy-sub').textContent = window.location.href.slice(0, 60) + '…';
+    setTimeout(function() {
+      document.getElementById('copy-text').textContent = 'Click to copy simulation URL';
+      document.getElementById('copy-sub').textContent = 'Share or bookmark your current settings';
+    }, 2500);
   });
 }
 
