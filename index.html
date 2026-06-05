@@ -173,9 +173,21 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
       <div class="rc-sub" id="r-median-sub">--</div>
     </div>
     <div class="rc">
+      <div class="rc-label">Median at End of Simulation</div>
+      <div class="rc-value" id="r-med-end">--</div>
+      <div class="rc-sub" id="r-med-end-sub">--</div>
+    </div>
+  </div>
+  <div class="results" style="margin-top:0">
+    <div class="rc">
       <div class="rc-label">Scenarios Surviving</div>
       <div class="rc-value" id="r-survive">--</div>
       <div class="rc-sub" id="r-survive-sub">--</div>
+    </div>
+    <div class="rc">
+      <div class="rc-label">Scenarios &gt; 5× Retirement</div>
+      <div class="rc-value" id="r-fivex">--</div>
+      <div class="rc-sub" id="r-fivex-sub">--</div>
     </div>
   </div>
 
@@ -384,13 +396,23 @@ function render() {
   // Result cards
   var retIdx = p.retAge - p.age;
   var retVals = paths.map(function(pt){ return pt[Math.min(retIdx, pt.length-1)]; });
+  var endVals = paths.map(function(pt){ return pt[pt.length-1]; });
   var medAtRet = median(retVals);
+  var medAtEnd = median(endVals);
   var nSurvive = survived.filter(Boolean).length;
+  var nFiveX   = paths.filter(function(pt, i) {
+    var rv = retVals[i];
+    return rv > 0 && pt[pt.length-1] > 5 * rv;
+  }).length;
 
-  document.getElementById('r-median').textContent = fmtK(medAtRet);
+  document.getElementById('r-median').textContent     = fmtK(medAtRet);
   document.getElementById('r-median-sub').textContent = 'at retirement age ' + p.retAge;
-  document.getElementById('r-survive').textContent = nSurvive + ' / 100';
+  document.getElementById('r-med-end').textContent     = fmtK(medAtEnd);
+  document.getElementById('r-med-end-sub').textContent = 'at age ' + p.eol;
+  document.getElementById('r-survive').textContent     = nSurvive + ' / 100';
   document.getElementById('r-survive-sub').textContent = 'portfolios > $0 at age ' + p.eol;
+  document.getElementById('r-fivex').textContent       = nFiveX + ' / 100';
+  document.getElementById('r-fivex-sub').textContent   = 'end value > 5× retirement balance';
   updatePresetButtons();
 
   // Build datasets
