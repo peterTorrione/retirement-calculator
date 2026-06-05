@@ -535,7 +535,9 @@ function render() {
         tooltip: {
           mode: 'nearest',
           intersect: true,
+          displayColors: false,
           callbacks: {
+            title: function() { return ''; },
             label: function(item) {
               var sp = item.dataset.simParams;
               if (sp) {
